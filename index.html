@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIS 23 - ESTEFY | FESTICHOLA</title>
+    <!-- Google Fonts: Syne & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome & Canvas Confetti -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --yellow-holo: #ffe600;
+            --yellow-gold: #ffd700;
+            --yellow-glow: #fff176;
+            --cyan-holo: #ff0066;
+            --purple-holo: #7000ff;
+            --magenta-accent: #e000ff;
+            --silver-light: #f0f4f8;
+            --silver-mid: #c0c8d0;
+            --bg-dark: #0a0814;
+            --card-bg: rgba(18, 14, 38, 0.75);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(255, 230, 0, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(112, 0, 255, 0.2) 0%, transparent 60%);
+            background-attachment: fixed;
+            padding: 15px;
+        }
+
+        .holo-text-yellow {
+            background: linear-gradient(135deg, #ffffff 0%, #ffe600 25%, #ff0062 50%, #ffe600 75%, #ffffff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: shine 4s linear infinite;
+        }
+
+        .holo-text-silver {
+            background: linear-gradient(135deg, #ffffff 0%, #c0c8d0 30%, #ffffff 50%, #8a99ad 70%, #ffffff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: shine 5s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 230, 0, 0.3);
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.6),
+                0 0 30px rgba(255, 230, 0, 0.2),
+                inset 0 0 15px rgba(255, 255, 255, 0.1);
+            padding: 28px 20px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .deco-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .disco-ball {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #fff 10%, #aaa 40%, #333 90%);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 40px rgba(255, 230, 0, 0.4);
+            top: -20px;
+            right: -10px;
+            animation: spin 12s linear infinite;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+        }
+
+        .disco-ball::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                linear-gradient(90deg, transparent 45%, rgba(0, 0, 0, 0.4) 50%, transparent 55%),
+                linear-gradient(0deg, transparent 45%, rgba(255, 255, 255, 0.6) 50%, transparent 55%);
+            background-size: 8px 8px;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .header-tag {
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--cyan-holo);
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .invitation-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .number-container {
+            position: relative;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .big-number {
+            font-family: 'Syne', sans-serif;
+            font-size: 110px;
+            font-weight: 800;
+            line-height: 0.9;
+            background: linear-gradient(135deg, #fff 0%, #ffe600 30%, #ff0066 60%, #ffd700 85%, #fff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: shine 3s linear infinite;
+            filter: drop-shadow(0 10px 20px rgba(255, 230, 0, 0.4));
+            text-shadow: 0 0 30px rgba(255, 230, 0, 0.5);
+        }
+
+        .name-badge {
+            font-family: 'Syne', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--yellow-holo), 0 0 20px var(--purple-holo);
+            margin-top: -15px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+        }
+
+        .info-item.full-width {
+            grid-column: span 2;
+        }
+
+        .info-item i {
+            font-size: 18px;
+            color: var(--yellow-holo);
+            margin-bottom: 5px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--silver-mid);
+        }
+
+        .info-value {
+            font-weight: 800;
+            font-size: 14px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .dresscode-box {
+            background: linear-gradient(135deg, rgba(255, 230, 0, 0.15) 0%, rgba(112, 0, 255, 0.2) 100%);
+            border: 2px dashed var(--yellow-holo);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .dresscode-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--yellow-holo);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .dresscode-desc {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #e0e0e0;
+        }
+
+        .btn-interactive {
+            background: linear-gradient(135deg, #ffe600 0%, #ffd700 40%, #ff0062 100%);
+            color: #000;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 16px;
+            text-transform: uppercase;
+            padding: 18px 25px;
+            border-radius: 50px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            box-shadow:
+                0 0 25px rgba(255, 230, 0, 0.6),
+                0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-interactive:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 35px rgba(255, 230, 0, 0.9);
+        }
+
+        /* MODALES (ROBOT / POP-UP) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 8, 20, 0.85);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: #120e26;
+            border: 2px solid var(--yellow-holo);
+            border-radius: 28px;
+            width: 100%;
+            max-width: 420px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(255, 230, 0, 0.4);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .palette-display {
+            margin: 25px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .color-swatches {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .swatch {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .palette-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--yellow-holo);
+        }
+
+        .accessory-suggestion {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #ddd;
+            border-left: 3px solid var(--cyan-holo);
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .btn-close {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.2s;
+        }
+
+        .btn-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 12px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: var(--yellow-holo);
+            color: var(--yellow-holo);
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: #000;
+            border: none;
+            font-weight: 800;
+        }
+
+        .btn-whatsapp:hover {
+            background: #20bd5a;
+            color: #000;
+        }
+
+        .spinner-box {
+            font-size: 40px;
+            margin: 15px 0;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinning {
+            animation: spin-icon 0.1s linear infinite;
+        }
+
+        @keyframes spin-icon {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card-container">
+        <div class="deco-elements">
+            <div class="disco-ball"></div>
+            <i class="fa-solid fa-sparkles y2k-star star-1"></i>
+            <i class="fa-solid fa-star y2k-star star-2"></i>
+            <i class="fa-solid fa-sparkles y2k-star star-3"></i>
+        </div>
+
+        <div class="header-tag">VAMOS A FESTEJAR</div>
+        <div class="invitation-title holo-text-silver">MIS</div>
+
+        <div class="number-container">
+            <div class="big-number">23</div>
+        </div>
+
+        <div class="name-badge holo-text-yellow">ESTEFY</div>
+
+        <div class="info-card">
+            <div class="info-item">
+                <i class="fa-regular fa-calendar-star"></i>
+                <span class="info-label">Fecha</span>
+                <span class="info-value">Sábado 7 Nov</span>
+            </div>
+            <div class="info-item">
+                <i class="fa-regular fa-clock"></i>
+                <span class="info-label">Hora</span>
+                <span class="info-value">22:00 HS</span>
+            </div>
+            <div class="info-item full-width">
+                <i class="fa-solid fa-location-dot"></i>
+                <span class="info-label">Punto de encuentro</span>
+                <span class="info-value">(arreglamos donde previar)</span>
+            </div>
+        </div>
+
+        <div class="dresscode-box">
+            <div class="dresscode-title">PROHIBIDO SER ABURRIDO/A</div>
+            <div class="dresscode-desc">
+                Dresscode: sumas 1 o 2 prendas a tu outfit... pelucas, lentes extravagantes, gorros, brillos o collares cargados.
+            </div>
+        </div>
+
+        <button class="btn-interactive" onclick="startColorPicker()">
+            <i class="fa-solid fa-palette"></i>
+            Ruleta de colores, la suerte loca!
+        </button>
+
+        <div class="action-buttons">
+            <!-- Botón que abre el modal con los datos de Groove -->
+            <button class="btn-action" onclick="openLocationModal()">
+                <i class="fa-solid fa-map-pin"></i>
+                Ubicación
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL DE LA RULETA DE COLORES -->
+    <div class="modal-overlay" id="colorModal">
+        <div class="modal-content">
+            <div class="header-tag" style="color: var(--yellow-holo)">AVERCH TUS COLORES...</div>
+
+            <div class="spinner-box" id="spinner">
+                <i class="fa-solid fa-compact-disc spinning" style="color: var(--yellow-holo);"></i>
+            </div>
+
+            <div class="palette-display" id="paletteResult" style="display: none;">
+                <div class="palette-name" id="paletteTitle">TORNASOL ELECTRO</div>
+                <div class="color-swatches" id="swatchesContainer"></div>
+                <div class="accessory-suggestion" id="accessoryText"></div>
+            </div>
+
+            <button class="btn-close" onclick="closeModal()">¡Re, confirmo!</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE UBICACIÓN (GROOVE) -->
+    <div class="modal-overlay" id="locationModal">
+        <div class="modal-content">
+            <div class="header-tag" style="color: var(--yellow-holo)">INFO DEL LUGAR</div>
+            
+            <div class="palette-display">
+                <div class="palette-name">SAFAERA EN GROOVE</div>
+                <div class="accessory-suggestion">
+                    <b>¡Noche de reggaetón viejo!</b><br>
+                    Sábado 7 de Noviembre en Palermo.<br>
+                    Nos encontramos para previar (o vamos juntos)!<br><br>
+                    <b>Dato extra:</b> La entrada confirmando ahora está 15.000 en VIP.
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <a href="https://maps.google.com/?q=Groove+Palermo+CABA" target="_blank" class="btn-action btn-whatsapp" style="padding: 12px; text-align: center; text-decoration: none;">
+                    Ver en Google Maps
+                </a>
+                <button class="btn-close" onclick="closeLocationModal()" style="margin-top: 0; flex: 1;">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PALETTES = [
+            {
+                name: "DOPAMINE (VIOLETA & LIMA)",
+                colors: ["#8338EC", "#88FF5F"],
+                idea: "IDEA: Peluca o lentes verde lima combinados con prendas violetas."
+            },
+            {
+                name: "LIME GREEN & VIBRANT RED",
+                colors: ["#D3F00A", "#F80E0B"],
+                idea: "IDEA: Gorros o brillos rojos intensos con detalles en verde lima."
+            },
+            {
+                name: "ORANGE & DUKE BLUE",
+                colors: ["#FB5607", "#390099"],
+                idea: "IDEA: Collares o campera naranja furioso sobre un look azul eléctrico."
+            },
+            {
+                name: "HOT MAGENTA & GOLDEN YELLOW",
+                colors: ["#FF006E", "#FFD60A"],
+                idea: "IDEA: Maquillaje con strass magenta y accesorios dorados/amarillos."
+            }
+        ];
+
+        function startColorPicker() {
+            const modal = document.getElementById('colorModal');
+            const spinner = document.getElementById('spinner');
+            const result = document.getElementById('paletteResult');
+
+            modal.classList.add('active');
+            spinner.style.display = 'flex';
+            result.style.display = 'none';
+
+            setTimeout(() => {
+                spinner.style.display = 'none';
+                result.style.display = 'flex';
+
+                const randomPalette = PALETTES[Math.floor(Math.random() * PALETTES.length)];
+
+                document.getElementById('paletteTitle').innerText = randomPalette.name;
+                document.getElementById('accessoryText').innerText = randomPalette.idea;
+
+                const swatchesContainer = document.getElementById('swatchesContainer');
+                swatchesContainer.innerHTML = '';
+
+                randomPalette.colors.forEach(color => {
+                    const swatch = document.createElement('div');
+                    swatch.className = 'swatch';
+                    swatch.style.backgroundColor = color;
+                    swatch.style.boxShadow = `0 0 15px ${color}aa`;
+                    swatchesContainer.appendChild(swatch);
+                });
+
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: randomPalette.colors.concat(['#ffe600', '#ffffff'])
+                });
+
+            }, 1200);
+        }
+
+        function closeModal() {
+            document.getElementById('colorModal').classList.remove('active');
+        }
+
+        function openLocationModal() {
+            document.getElementById('locationModal').classList.add('active');
+        }
+
+        function closeLocationModal() {
+            document.getElementById('locationModal').classList.remove('active');
+        }
+    </script>
+</body>
+
+</html>
